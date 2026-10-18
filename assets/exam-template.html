@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<title>{{TITLE}}</title>
+<script>
+window.MathJax = {
+  tex: {
+    inlineMath: [['$', '$'], ['\\(', '\\)']],
+    displayMath: [['$$', '$$'], ['\\[', '\\]']],
+    processEscapes: true
+  },
+  svg: { fontCache: 'global' },
+  options: { skipHtmlTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code'] }
+};
+</script>
+<script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-svg.js" id="MathJax-script"></script>
+<style>
+  @page { size: A4; margin: 12mm 12mm 14mm 12mm; }
+  * { box-sizing: border-box; }
+  body {
+    font-family: "Noto Sans CJK SC", "Source Han Sans SC", "PingFang SC",
+                 "Microsoft YaHei", "WenQuanYi Zen Hei", sans-serif;
+    font-size: 11pt; line-height: 1.55; color: #1a1a1a; margin: 0;
+  }
+  .report-head {
+    border-bottom: 2px solid #222; padding-bottom: 8px; margin-bottom: 12px;
+  }
+  .report-head h1 {
+    font-size: 18pt; margin: 0 0 2px 0; letter-spacing: 1px;
+  }
+  .report-head .sub {
+    font-size: 9.5pt; color: #666; margin-bottom: 8px;
+  }
+  .meta {
+    display: flex; flex-wrap: wrap; gap: 6px 18px;
+    font-size: 9.5pt; color: #333;
+  }
+  .meta b { color: #000; }
+  .name-line {
+    margin-top: 8px; font-size: 10pt; color: #333;
+  }
+  .name-line .u {
+    display: inline-block; border-bottom: 1px solid #888;
+    min-width: 180px; height: 1em; vertical-align: bottom;
+  }
+
+  h2.sec {
+    font-size: 12pt; margin: 14px 0 6px 0;
+    border-left: 4px solid #2c5aa0; padding-left: 8px;
+  }
+  .q { margin: 8px 0 10px 0; page-break-inside: avoid; }
+  .q.long .stem, .q.long .opt { font-size: 10pt; line-height: 1.5; }
+  .stem { margin-bottom: 4px; }
+  .qn { font-weight: bold; margin-right: 4px; }
+  .qid {
+    color: #888; font-size: 8.5pt; font-weight: normal;
+    font-family: "SFMono-Regular", Consolas, Menlo, monospace;
+    margin-left: 6px; vertical-align: 1px;
+  }
+  .qtag { color: #a0402c; font-size: 9.5pt; }
+  .opts { margin: 2px 0 0 22px; }
+  .opt { margin: 2px 0; }
+  .opt .k { font-weight: bold; margin-right: 4px; }
+  .opts-h { display: flex; flex-wrap: wrap; gap: 4px 18px; margin-left: 22px; }
+  .opts-h .opt-h { white-space: nowrap; }
+  .judge-bracket { color: #555; margin-left: 6px; }
+  .blank-line {
+    display: inline-block; min-width: 90px; border-bottom: 1px solid #333;
+    height: 0.9em; vertical-align: bottom; margin: 0 2px;
+  }
+  .answer-space { margin: 6px 0 0 0; }
+  .answer-box {
+    border: 1px solid #888;
+    background: #fff;
+  }
+
+  /* 大题：题干全宽横向，仅答题框两栏，框高直达页底、顶部对齐 */
+  .subj-section { page-break-before: always; }
+  .subj-page {
+    display: flex;
+    flex-direction: column;
+    height: 268mm;
+  }
+  .subj-section > h2.sec + .subj-page { height: 258mm; }
+  .subj-page + .subj-page { page-break-before: always; }
+  .subj-stems .stem { margin-bottom: 8px; }
+  .subj-boxes {
+    flex: 1;
+    display: flex;
+    gap: 8mm;
+    min-height: 0;
+  }
+  .subj-col { flex: 1 1 0; display: flex; min-width: 0; }
+  .subj-col .answer-box { flex: 1; }
+
+  /* 答案区 */
+  .answer-page { page-break-before: always; }
+  .answer-head {
+    border-bottom: 2px solid #222; padding-bottom: 6px; margin-bottom: 10px;
+  }
+  .answer-head h2 { font-size: 15pt; margin: 0; }
+  .answer-head .hint { font-size: 9pt; color: #666; margin-top: 2px; }
+  .arow {
+    margin: 6px 0 8px 0; padding: 6px 8px;
+    background: #f7f8fa; border-left: 3px solid #2c5aa0;
+    page-break-inside: avoid; font-size: 10.5pt;
+  }
+  .ahead { margin-bottom: 2px; }
+  .aq { font-weight: bold; }
+  .ans { color: #b02a2a; font-size: 11pt; }
+  .atype { color: #888; font-size: 9pt; margin-left: 6px; }
+  .astem { color: #555; font-size: 9.5pt; margin: 1px 0 3px 0; }
+  .analysis { color: #222; }
+  .analysis.muted { color: #999; font-style: italic; }
+  .ameta { color: #888; font-size: 9pt; margin-top: 2px; }
+  .arow-compact {
+    margin: 2px 0; padding: 2px 4px;
+    background: none; border-left: none;
+    font-size: 11pt; line-height: 1.6;
+    page-break-inside: avoid;
+  }
+  .arow-compact .qid { color: #999; font-size: 9pt; margin-left: 4px; }
+  .arow-compact .ans { color: #b02a2a; }
+
+  /* 代码块 */
+  pre.code-block {
+    background: #f4f5f7; border: 1px solid #d8dce3; border-radius: 4px;
+    padding: 8px 10px; margin: 4px 0 4px 22px;
+    font-family: "SFMono-Regular", Consolas, "Liberation Mono", Menlo, monospace;
+    font-size: 9.5pt; line-height: 1.45; white-space: pre; overflow-x: auto;
+    page-break-inside: avoid;
+  }
+  pre.code-block code { font-family: inherit; background: none; padding: 0; }
+  code.inline-code {
+    font-family: "SFMono-Regular", Consolas, Menlo, monospace;
+    background: #f0f1f3; padding: 1px 4px; border-radius: 3px;
+    font-size: 0.92em;
+  }
+</style>
+</head>
+<body>
+
+<div class="report-head">
+  <h1>{{TITLE}}</h1>
+  <div class="sub">{{SUBTITLE}}</div>
+  <div class="meta">
+    <span>日期：<b>{{META_DATE}}</b></span>
+    <span>范围：<b>{{META_SCOPE}}</b></span>
+    <span>题数：<b>{{META_COUNT}}</b></span>
+    <span>构成：<b>{{META_TYPES}}</b></span>
+    <span>{{META_DURATION}}</span>
+  </div>
+  <div class="name-line">姓名：<span class="u"></span> &nbsp; 得分：<span class="u" style="min-width:80px"></span></div>
+</div>
+
+{{QUESTIONS}}
+
+<div class="answer-page">
+  <div class="answer-head">
+    <h2>参考答案</h2>
+    <div class="hint">闭卷完成后再翻阅 · 错题请回到 Notion 错题库订正</div>
+  </div>
+  {{ANSWERS}}
+</div>
+
+</body>
+</html>
